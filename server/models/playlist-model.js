@@ -14,7 +14,13 @@ const playlistSchema = new Schema(
             title: String,
             artist: String,
             youTubeId: String
-        }], required: true }
+        }], required: true },
+        comments: { type: [{
+            username: String,
+            // index: String, // ? Is this index necessary to keep the comments in order?
+            comment: String
+        }]
+        }
     },
     { timestamps: true },
 )
