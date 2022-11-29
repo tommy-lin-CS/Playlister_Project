@@ -74,13 +74,18 @@ body {
   vertical-align: center;
 }
 
+#app-purpose-message {
+  font-size: 30pt;
+  color: rgb(172, 57, 57);
+}
+
 #welcome-message {
   position: absolute;
   font-size: 25pt; 
   top: 30%;
   right: auto;
   color: black;
-  margin: 20px 20%;
+  margin: 5px 20%;
 }
 
 #splash-page-footer {
@@ -93,7 +98,7 @@ body {
 
 #splash-screen-buttons {
   margin: auto auto;
-  
+  padding-top: 20%;
 }
 
 #edit-toolbar {

@@ -34,6 +34,7 @@ export default function SplashScreen() {
                 <img alt="playlister-logo" src={PlaylisterLogo} />
             </div>
             <div id="welcome-message">
+                <p id="app-purpose-message">CREATE.LISTEN.SHARE 🎵</p>
                 <p>Your #1 all-in-one place to create, listen, and share your favorite music with your friends and family.</p>
             </div>
             <div id="splash-screen-buttons">
