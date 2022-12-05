@@ -5,7 +5,7 @@ import { GlobalStoreContext } from '../store'
 
 import EditToolbar from './EditToolbar'
 
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Avatar } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -86,17 +86,15 @@ export default function AppBanner() {
     }
     
     function getAccountMenu(loggedIn) {
-        let userInitials = auth.getUserInitials();
-        console.log("userInitials: " + userInitials);
         if (loggedIn) 
-            return <div>{userInitials}</div>;
+            return <div>{<Avatar/>}</div>;
         else
-            return <AccountCircle />;
+            return <Avatar />;
     }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar position="static" sx={{bgcolor: "gray"}}>
                 <Toolbar>
                     <Typography                        
                         variant="h4"
@@ -104,7 +102,7 @@ export default function AppBanner() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
-                        <Link style={{ textDecoration: 'none', color: 'white' }} to='/'>⌂</Link>
+                        <Link style={{ textDecoration: 'none', color: 'rgb(176, 42, 42)', fontFamily:"Lobster"}} to='/'>Playlister</Link>
                     </Typography>
                     <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
