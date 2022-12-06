@@ -55,6 +55,7 @@ export default function AppBanner() {
         >
             <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
             <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
+            <MenuItem onClick={handleMenuClose}><Link to=''>Continue as Guest</Link></MenuItem>
         </Menu>
     );
     const loggedInMenu = 
@@ -94,7 +95,7 @@ export default function AppBanner() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" sx={{bgcolor: "gray"}}>
+            <AppBar position="static" sx={{bgcolor: "lightgray"}}>
                 <Toolbar>
                     <Typography                        
                         variant="h4"

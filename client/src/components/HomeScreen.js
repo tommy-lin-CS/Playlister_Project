@@ -5,7 +5,8 @@ import AuthContext from '../auth';
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
 import List from '@mui/material/List';
-import { Button, IconButton, TextField } from '@mui/material';
+import { Typography, Box, Tabs, Tab, Button, IconButton, TextField } from '@mui/material';
+import PropTypes from 'prop-types';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import SortIcon from '@mui/icons-material/Sort';
@@ -30,9 +31,6 @@ const HomeScreen = () => {
         store.loadIdNamePairs();
     }, []);
 
-    function handleCreateNewList() {
-        store.createNewList();
-    }
 
     const handleDropdownOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -110,6 +108,42 @@ const HomeScreen = () => {
         </Menu>
     );
 
+    // Source code adopted from MUI Tabs
+    function TabPanel(props) {
+        const { children, value, index, ...other } = props;
+        return (
+            <div
+              role="tabpanel"
+              hidden={value !== index}
+              id={`simple-tabpanel-${index}`}
+              aria-labelledby={`simple-tab-${index}`}
+              {...other}
+            >
+              {value === index && (
+                <Box sx={{ p: 3 }}>
+                  <Typography>{children}</Typography>
+                </Box>
+              )}
+            </div>
+          );
+        }
+        TabPanel.propTypes = {
+          children: PropTypes.node,
+          index: PropTypes.number.isRequired,
+          value: PropTypes.number.isRequired,
+        };
+        
+        function a11yProps(index) {
+          return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+          };
+    }
+    const [value, setValue] = React.useState(0);
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
     return (
         <div id="homescreen">
             <div id="homescreen-banner">
@@ -145,7 +179,27 @@ const HomeScreen = () => {
                 </Button>
                 {dropdown}
             </div>
-            
+
+            <div id="homescreen-sections">
+                <div id="list-selector-list">
+                    {listCard}
+                </div>
+                <div id="player-comment-selector">
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        <Tab label="Player" {...a11yProps(0)} />
+                        <Tab label="Comments" {...a11yProps(1)} />
+                    </Tabs>
+                    </Box>
+                    <TabPanel value={value} index={0}>
+                    Player
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                    Comments
+                    </TabPanel>
+                </div>
+            </div>
+                
         </div>
     )
 }
