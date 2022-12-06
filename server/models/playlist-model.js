@@ -5,10 +5,12 @@ const Schema = mongoose.Schema
     the database.
     
     @author McKilla Gorilla
+    @author Tommy Lin
 */
 const playlistSchema = new Schema(
     {
         name: { type: String, required: true },
+        ownerUsename: { type: String, required: true},
         ownerEmail: { type: String, required: true },
         songs: { type: [{
             title: String,
@@ -17,10 +19,14 @@ const playlistSchema = new Schema(
         }], required: true },
         comments: { type: [{
             username: String,
-            // index: String, // ? Is this index necessary to keep the comments in order?
             comment: String
-        }]
-        }
+        }], required: true
+        },
+        likes: { type: Number, required: true },
+        dislikes: { type: Number, required: true },
+        listens: { type: Number, required: true },
+        published: { type: Boolean, required: true},
+        publishedDate: {type: Date, required: true}
     },
     { timestamps: true },
 )

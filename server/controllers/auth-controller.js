@@ -19,6 +19,7 @@ getLoggedIn = async (req, res) => {
         return res.status(200).json({
             loggedIn: true,
             user: {
+                username: loggedInUser.username,
                 firstName: loggedInUser.firstName,
                 lastName: loggedInUser.lastName,
                 email: loggedInUser.email
@@ -73,6 +74,7 @@ loginUser = async (req, res) => {
         }).status(200).json({
             success: true,
             user: {
+                username: existingUser.username,
                 firstName: existingUser.firstName,
                 lastName: existingUser.lastName,  
                 email: existingUser.email              
