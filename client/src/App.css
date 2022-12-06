@@ -180,6 +180,7 @@ body {
 }
 
 #player-comment-selector {
+  padding: 0px;
 }
 
 .list-card,
@@ -346,9 +347,8 @@ input {
 
 #homescreen-sections {
   display: grid;
-  grid-template-columns: 60% 30%;
-  grid-gap: 10px;
-  /* padding: 10px; */
+  grid-template-columns: 60% 40%;
+  padding: 10px;
   margin-top: 5%;
   height: 85%;
 }

@@ -14,6 +14,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import GroupsIcon from '@mui/icons-material/Groups';
 import SearchIcon from '@mui/icons-material/Search';
+import YouTubePlayer from './YouTubePlayer';
 
 /*
     This React component lists all the playlist lists in the UI.
@@ -120,7 +121,7 @@ const HomeScreen = () => {
               {...other}
             >
               {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{ p: 0}}>
                   <Typography>{children}</Typography>
                 </Box>
               )}
@@ -192,7 +193,7 @@ const HomeScreen = () => {
                     </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                    Player
+                    <YouTubePlayer />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                     Comments
