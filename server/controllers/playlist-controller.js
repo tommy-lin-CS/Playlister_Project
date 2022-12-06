@@ -29,6 +29,7 @@ createPlaylist = (req, res) => {
         loggedInUserEmail = user.email; // User that's already logged in
         requestedUserEmail = playlist.ownerEmail; // User Postman is trying to access
         if(loggedInUserEmail !== requestedUserEmail) {
+            console.log("ERROR 2")
             return res.status(400).json({
                 errorMessage: "You are creating a playlist on another user's playlist."
             })
@@ -142,7 +143,7 @@ getPlaylistPairs = async (req, res) => {
                         let pair = {
                             _id: list._id,
                             name: list.name,
-                            ownerUsename: list.ownerUsename,
+                            ownerUsername: list.ownerUsername,
                             likes: list.likes,
                             dislikes: list.dislikes,
                             listens: list.listens,
