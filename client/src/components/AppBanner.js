@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
 
-import EditToolbar from './EditToolbar'
-
 import { Avatar } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -81,14 +79,13 @@ export default function AppBanner() {
     let menu = loggedOutMenu;
     if (auth.loggedIn) {
         menu = loggedInMenu;
-        if (store.currentList) {
-            editToolbar = <EditToolbar />;
-        }
     }
     
     function getAccountMenu(loggedIn) {
+        let userInitials = auth.getUserInitials();
+        console.log("userInitials: " + userInitials);
         if (loggedIn) 
-            return <div>{<Avatar/>}</div>;
+            return <div><Avatar>{userInitials}</Avatar></div>;
         else
             return <Avatar />;
     }
