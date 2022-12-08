@@ -18,8 +18,8 @@ function Statusbar() {
     function handleCreateNewList() {
         store.createNewList();
     }
-    
-    if (auth.loggedIn) {
+
+    if (auth.loggedIn && auth.user.username !== 'Guest') {
         if (store.currentList)
             text = store.currentList.name;
         else {
@@ -43,7 +43,11 @@ function Statusbar() {
         );
     }
     else {
-        return null;
+        return (
+            <div id="playlister-statusbar">
+                <Typography variant="h4">{"GUEST ACCESS"}</Typography>
+            </div>
+        );;
     }
 
 

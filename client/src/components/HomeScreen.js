@@ -58,12 +58,24 @@ const HomeScreen = () => {
 
     // Home Button functionality different depending on the user logged in (guest or not)
     let homeButton;
-    if (auth.user.username !== "guest") {
+    console.log(auth.user.username)
+    if (auth.user.username !== "Guest") {
         homeButton = 
         <Button 
             aria-label="home"
             id="home-button"
             style={{ color: "black" }}
+        >
+            <HomeIcon style={{ fontSize: 45 }}/>
+        </Button>;
+    }
+    else {
+        homeButton = 
+        <Button 
+            disabled
+            aria-label="home"
+            id="home-button"
+            style={{ color: "gray" }}
         >
             <HomeIcon style={{ fontSize: 45 }}/>
         </Button>;

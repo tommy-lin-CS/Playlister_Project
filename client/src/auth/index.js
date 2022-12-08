@@ -89,7 +89,7 @@ function AuthContextProvider(props) {
             }
             case AuthActionType.HIDE_ERROR_MODAL: {
                 return setAuth({
-                    user: null, 
+                    user: null,
                     guest: false,
                     loggedIn: auth.loggedIn,
                     loginError: null,
@@ -98,7 +98,7 @@ function AuthContextProvider(props) {
             }
             case AuthActionType.GUEST_LOGIN_ACCESS: {
                 return setAuth({
-                    user: null,
+                    user: payload.user,
                     guest: true,
                     loggedIn: true,
                 })
@@ -121,11 +121,11 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.registerUser = async function(username, firstName, lastName, email, password, passwordVerify) {
+    auth.registerUser = async function (username, firstName, lastName, email, password, passwordVerify) {
         const response = await api.registerUser(username, firstName, lastName, email, password, passwordVerify)
-        .catch((err) => {
-            return err.response;
-        });
+            .catch((err) => {
+                return err.response;
+            });
         if (response.status === 200) {
             authReducer({
                 type: AuthActionType.REGISTER_USER,
@@ -141,11 +141,11 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.loginUser = async function(email, password) {
+    auth.loginUser = async function (email, password) {
         const response = await api.loginUser(email, password)
             .catch((err) => {
                 return err.response;
-        });
+            });
         if (response.status === 200) {
             authReducer({
                 type: AuthActionType.LOGIN_USER,
@@ -161,18 +161,18 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.guestLogin = async function() {
+    auth.guestLogin = async function () {
         authReducer({
             type: AuthActionType.GUEST_LOGIN_ACCESS,
-            payload: {}            
+            payload: {}
         });
         history.push("/");
     }
 
-    auth.logoutUser = async function() {
+    auth.logoutUser = async function () {
         const response = await api.logoutUser();
         if (response.status === 200) {
-            authReducer( {
+            authReducer({
                 type: AuthActionType.LOGOUT_USER,
                 payload: null
             })
@@ -180,7 +180,7 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.getUserInitials = function() {
+    auth.getUserInitials = function () {
         let initials = "";
         if (auth.user) {
             initials += auth.user.firstName.charAt(0);
@@ -190,26 +190,59 @@ function AuthContextProvider(props) {
         return initials;
     }
 
-    auth.showLoginErrorModal = function(errorMessage) {
-        authReducer( {
+    auth.showLoginErrorModal = function (errorMessage) {
+        authReducer({
             type: AuthActionType.LOGIN_ERROR,
             payload: { errorMessage: errorMessage }
         })
     }
 
-    auth.showRegisterErrorModal = function(errorMessage) {
+    auth.showRegisterErrorModal = function (errorMessage) {
         console.log(errorMessage)
-        authReducer( {
+        authReducer({
             type: AuthActionType.REGISTER_ERROR,
             payload: { errorMessage: errorMessage }
         })
     }
 
-    auth.hideErrorModals = function() {
-        authReducer( {
+    auth.hideErrorModals = function () {
+        authReducer({
             type: AuthActionType.HIDE_ERROR_MODAL,
             payload: null
         })
+    }
+
+    auth.guestUser = async function () {
+        try {
+            let response = await api.registerUser("guest", "guest", "user", "guest@noemail.email", "password", "password");
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.GUEST_LOGIN_ACCESS,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+                response = await api.loginUser("guest@noemail.email", "password");
+                if (response.status === 200) {
+                    authReducer({
+                        type: AuthActionType.GUEST_LOGIN_ACCESS,
+                        payload: {
+                            user: response.data.user
+                        }
+                    })
+                }
+            }
+        } catch (error) {
+            let response = await api.loginUser("guest@noemail.email", "password");
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.GUEST_LOGIN_ACCESS,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+            }
+        }
     }
 
     return (
