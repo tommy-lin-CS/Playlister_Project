@@ -1,26 +1,32 @@
 import React from 'react';
+import { useContext, useState } from 'react';
 import YouTube from 'react-youtube';
-import { Box, Typography, Button, ButtonGroup, IconButton } from '@mui/material'
+import { Box, Typography, ButtonGroup, IconButton } from '@mui/material'
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import GlobalStoreContext from '../store';
 
 export default function YoutubePlayer() {
-    // THIS EXAMPLE DEMONSTRATES HOW TO DYNAMICALLY MAKE A
-    // YOUTUBE PLAYER AND EMBED IT IN YOUR SITE. IT ALSO
-    // DEMONSTRATES HOW TO IMPLEMENT A PLAYLIST THAT MOVES
-    // FROM ONE SONG TO THE NEXT
+    const { store } = useContext(GlobalStoreContext);
+    const [currentSong, setCurrentSong] = useState(0);
+    const [eventTarget, setEventTarget] = useState();
+    let name = "";
+    let title = "";
+    let artist = "";
+    let songIndex = "";
+    let playlist = [];
 
-    // THIS HAS THE YOUTUBE IDS FOR THE SONGS IN OUR PLAYLIST
-    let playlist = [
-        "tp4fUH2E8uc",
-        "8RbXIMZmVv8",
-        "8UbNbor3OqQ"
-    ];
-
-    // THIS IS THE INDEX OF THE SONG CURRENTLY IN USE IN THE PLAYLIST
-    let currentSong = 0;
+    if (store.currentList && store.currentList.songs) {
+        playlist = store.currentList.songs.map((song) => (song.youTubeId));
+        name = store.currentList.name;
+        if (store.currentList.songs.length !== 0) {
+            title = store.currentList.songs[currentSong].title;
+            artist = store.currentList.songs[currentSong].artist;
+            songIndex = currentSong + 1
+        }
+    }
 
     const playerOptions = {
         height: '290',
@@ -39,14 +45,32 @@ export default function YoutubePlayer() {
         player.playVideo();
     }
 
+    // THIS FUNCTIONS HANDLES PLAY SONG
+    function handlePlaySong() {
+        eventTarget.playVideo();
+    }
+
+    function handleStopSong() {
+        eventTarget.pauseVideo();
+    }
+
     // THIS FUNCTION INCREMENTS THE PLAYLIST SONG TO THE NEXT ONE
-    function incSong() {
-        currentSong++;
-        currentSong = currentSong % playlist.length;
+    function skipSong() {
+        if(currentSong != store.currentList.songs.length - 1) {
+            let i = currentSong+1;
+            setCurrentSong(i);
+        }
+    }
+
+    function prevSong () {
+        if(currentSong != 0) {
+            let i = currentSong - 1
+            setCurrentSong(i);
+        }
     }
 
     function onPlayerReady(event) {
-        loadAndPlayCurrentSong(event.target);
+        setEventTarget(event.target);
         event.target.playVideo();
     }
 
@@ -63,7 +87,7 @@ export default function YoutubePlayer() {
         } else if (playerStatus === 0) {
             // THE VIDEO HAS COMPLETED PLAYING
             console.log("0 Video ended");
-            incSong();
+            skipSong();
             loadAndPlayCurrentSong(player);
         } else if (playerStatus === 1) {
             // THE VIDEO IS PLAYED
@@ -89,20 +113,20 @@ export default function YoutubePlayer() {
                 onStateChange={onPlayerStateChange}
             />
             <Box id="song-info" >
-                <Typography sx={{ pl: 1, pt: 1, fontWeight: 'bold' }}>Playlist:&#32;</Typography> 
-                <Typography sx={{ pl: 1, fontWeight: 'bold' }}>Song&#32;#:&#32;</Typography>  
-                <Typography sx={{ pl: 1, fontWeight: 'bold' }}>Title:&#32;</Typography>  
-                <Typography sx={{ pl: 1, fontWeight: 'bold' }}>Artist:&#32;</Typography>
+                <Typography sx={{ pl: 1, pt: 1, fontWeight: 'bold' }}>Playlist: {name}</Typography>
+                <Typography sx={{ pl: 1, fontWeight: 'bold' }}>Song #: {songIndex}</Typography>
+                <Typography sx={{ pl: 1, fontWeight: 'bold' }}>Title: {title}</Typography>
+                <Typography sx={{ pl: 1, fontWeight: 'bold' }}>Artist: {artist}</Typography>
             </Box>
             <Box id="player-buttons" display="flex" justifyContent="center">
                 <ButtonGroup variant="contained" aria-label="outlined button group" >
-                    <IconButton><FastRewindIcon></FastRewindIcon></IconButton>
-                    <IconButton><PauseIcon></PauseIcon></IconButton>
-                    <IconButton><PlayArrowIcon></PlayArrowIcon></IconButton>
-                    <IconButton><FastForwardIcon></FastForwardIcon></IconButton>
+                    <IconButton onClick={ prevSong }><FastRewindIcon></FastRewindIcon></IconButton>
+                    <IconButton onClick={ handleStopSong }><PauseIcon></PauseIcon></IconButton>
+                    <IconButton onClick={ handlePlaySong }><PlayArrowIcon></PlayArrowIcon></IconButton>
+                    <IconButton onClick={ skipSong }><FastForwardIcon ></FastForwardIcon></IconButton>
                 </ButtonGroup>
             </Box>
-            
+
         </div>
     )
 
