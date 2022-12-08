@@ -42,12 +42,15 @@ function Statusbar() {
             </div>
         );
     }
-    else {
+    else if(auth.loggedIn && auth.user.username == "Guest") {
         return (
             <div id="playlister-statusbar">
                 <Typography variant="h4">{"GUEST ACCESS"}</Typography>
             </div>
-        );;
+        );
+    }
+    else {
+        return null;
     }
 
 
