@@ -187,9 +187,8 @@ body {
 .selected-list-card,
 .unselected-list-card {
   font-size: 18pt;
-  margin: 10px;
   padding: 20px;
-  border-radius: 25px;
+  border: solid;
 }
 
 .list-card:aria-disabled,
@@ -212,7 +211,7 @@ body {
 }
 
 .unselected-list-card {
-  background-color: var(--swatch-complement);
+  background-color: lightgray;
 }
 
 .list-card-button {
@@ -308,7 +307,6 @@ input {
 #playlist-selector, #playlist-cards {
   grid-column: 1 / 3;
   grid-row: 2 / 3;
-  overflow: scroll;
   display: flex;
   flex-direction: column;
 }

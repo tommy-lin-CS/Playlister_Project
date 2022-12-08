@@ -13,7 +13,7 @@ let handleLogin = () => {
 
 // HANDLES GUEST BUTTON CLICKED
 let handleGuest = () => {
-    // TODO: GUEST HANDLER
+    
 }
 
 export default function SplashScreen() {

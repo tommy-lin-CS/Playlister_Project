@@ -35,9 +35,6 @@ function Statusbar() {
                     </Button>
                     Your Lists
                 </div>
-                
-
-
         }
         return (
             <div id="playlister-statusbar">

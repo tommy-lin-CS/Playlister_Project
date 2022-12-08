@@ -3,7 +3,6 @@ import { GlobalStoreContext } from '../store'
 import AuthContext from '../auth';
 
 import ListCard from './ListCard.js'
-import MUIDeleteModal from './MUIDeleteModal'
 import List from '@mui/material/List';
 import { Typography, Box, Tabs, Tab, Button, IconButton, TextField } from '@mui/material';
 import PropTypes from 'prop-types';

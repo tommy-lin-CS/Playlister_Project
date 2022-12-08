@@ -13,12 +13,14 @@ export const AuthActionType = {
     REGISTER_USER: "REGISTER_USER",
     LOGIN_ERROR: "LOGIN_ERROR",
     REGISTER_ERROR: "REGISTER_ERROR",
-    HIDE_ERROR_MODAL: "HIDE_ERROR_MODAL"
+    HIDE_ERROR_MODAL: "HIDE_ERROR_MODAL",
+    GUEST_LOGIN_ACCESS: "GUESS_LOGIN_ACCESS"
 }
 
 function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
+        guest: false,
         loggedIn: false,
         loginError: null,
         registerError: null
@@ -35,6 +37,7 @@ function AuthContextProvider(props) {
             case AuthActionType.GET_LOGGED_IN: {
                 return setAuth({
                     user: payload.user,
+                    guest: false,
                     loggedIn: payload.loggedIn,
                     loginError: null,
                     registerError: null
@@ -43,6 +46,7 @@ function AuthContextProvider(props) {
             case AuthActionType.LOGIN_USER: {
                 return setAuth({
                     user: payload.user,
+                    guest: false,
                     loggedIn: true,
                     loginError: null,
                     registerError: null
@@ -51,6 +55,7 @@ function AuthContextProvider(props) {
             case AuthActionType.LOGOUT_USER: {
                 return setAuth({
                     user: null,
+                    guest: false,
                     loggedIn: false,
                     loginError: null,
                     registerError: null
@@ -59,6 +64,7 @@ function AuthContextProvider(props) {
             case AuthActionType.REGISTER_USER: {
                 return setAuth({
                     user: payload.user,
+                    guest: false,
                     loggedIn: true,
                     loginError: null,
                     registerError: null
@@ -67,6 +73,7 @@ function AuthContextProvider(props) {
             case AuthActionType.LOGIN_ERROR: {
                 return setAuth({
                     user: null,
+                    guest: false,
                     loggedIn: auth.loggedIn,
                     loginError: payload.errorMessage,
                     registerError: null
@@ -83,9 +90,17 @@ function AuthContextProvider(props) {
             case AuthActionType.HIDE_ERROR_MODAL: {
                 return setAuth({
                     user: null, 
+                    guest: false,
                     loggedIn: auth.loggedIn,
                     loginError: null,
                     registerError: null
+                })
+            }
+            case AuthActionType.GUEST_LOGIN_ACCESS: {
+                return setAuth({
+                    user: null,
+                    guest: true,
+                    loggedIn: true,
                 })
             }
             default:
@@ -144,6 +159,14 @@ function AuthContextProvider(props) {
             console.log(response.data.errorMessage)
             auth.showLoginErrorModal(response.data.errorMessage);
         }
+    }
+
+    auth.guestLogin = async function() {
+        authReducer({
+            type: AuthActionType.GUEST_LOGIN_ACCESS,
+            payload: {}            
+        });
+        history.push("/");
     }
 
     auth.logoutUser = async function() {
