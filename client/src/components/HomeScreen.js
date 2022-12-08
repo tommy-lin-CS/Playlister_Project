@@ -207,7 +207,7 @@ const HomeScreen = () => {
                     <YouTubePlayer />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                    Comments
+                    <TextField></TextField>
                     </TabPanel>
                 </div>
             </div>
