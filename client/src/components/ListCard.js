@@ -27,9 +27,8 @@ import MUIRemoveSongModal from './MUIRemoveSongModal'
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
-    const { idNamePair, selected } = props;
+    const { idNamePair } = props;
     const [text, setText] = useState(idNamePair.name);
-    // const [expanded, setExpanded] = React.useState(null);
     const [openActive, setOpenActive] = useState(false);
 
 
@@ -83,25 +82,14 @@ function ListCard(props) {
     }
 
     function handleDuplicatePlaylist() {
+        console.log("HAPPY")
+        handleCloseList();
         store.createNewList(idNamePair.name, idNamePair.songs)
     }
 
     function handleCloseList() {
         store.closeCurrentList();
     }
-    // const handleChange = (panel) => (event, isExpanded) => {
-    //     setExpanded(isExpanded ? panel : false);
-    // };
-
-    let selectClass = "unselected-list-card";
-    if (selected) {
-        selectClass = "selected-list-card";
-    }
-    let cardStatus = false;
-    if (store.isListNameEditActive) {
-        cardStatus = true;
-    }
-
 
     let modalJSX = "";
     if (store.isEditSongModalOpen()) {
@@ -112,7 +100,7 @@ function ListCard(props) {
     }
 
     let songCard;
-    if (store.currentList !== null) {
+    if (store.currentList) {
         songCard =
         (
         <Box>

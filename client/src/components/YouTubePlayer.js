@@ -56,14 +56,14 @@ export default function YoutubePlayer() {
 
     // THIS FUNCTION INCREMENTS THE PLAYLIST SONG TO THE NEXT ONE
     function skipSong() {
-        if(currentSong != store.currentList.songs.length - 1) {
+        if(currentSong !== store.currentList.songs.length - 1) {
             let i = currentSong+1;
             setCurrentSong(i);
         }
     }
 
     function prevSong () {
-        if(currentSong != 0) {
+        if(currentSong !== 0) {
             let i = currentSong - 1
             setCurrentSong(i);
         }

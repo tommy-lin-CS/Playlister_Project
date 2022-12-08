@@ -7,7 +7,7 @@ import MoveSong_Transaction from '../transactions/MoveSong_Transaction'
 import RemoveSong_Transaction from '../transactions/RemoveSong_Transaction'
 import UpdateSong_Transaction from '../transactions/UpdateSong_Transaction'
 import AuthContext from '../auth'
-import { CompareSharp } from '@mui/icons-material'
+
 /*
     This is our global data store. Note that it uses the Flux design pattern,
     which makes use of things like actions and reducers. 
@@ -285,10 +285,7 @@ function GlobalStoreContextProvider(props) {
                 payload: newList
             }
             );
-
-            // IF IT'S A VALID LIST THEN LET'S START EDITING IT
             store.loadIdNamePairs();
-            history.push("/");
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");

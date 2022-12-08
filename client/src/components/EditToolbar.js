@@ -4,7 +4,6 @@ import IconButton from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
-import CloseIcon from '@mui/icons-material/HighlightOff';
 import { ButtonGroup } from '@mui/material';
 
 /*
