@@ -87,7 +87,7 @@ export default function YoutubePlayer() {
         } else if (playerStatus === 0) {
             // THE VIDEO HAS COMPLETED PLAYING
             console.log("0 Video ended");
-            skipSong();
+            skipSong(player);
             loadAndPlayCurrentSong(player);
         } else if (playerStatus === 1) {
             // THE VIDEO IS PLAYED
@@ -101,6 +101,7 @@ export default function YoutubePlayer() {
         } else if (playerStatus === 5) {
             // THE VIDEO HAS BEEN CUED
             console.log("5 Video cued");
+            eventTarget.playVideo();
         }
     }
 

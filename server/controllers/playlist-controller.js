@@ -5,7 +5,7 @@ const User = require('../models/user-model');
     our database needs. Note that this file contains the controller
     functions for each endpoint.
     
-    @author McKilla Gorilla
+    @author Tommy Lin
 */
 createPlaylist = (req, res) => {
     const body = req.body;
