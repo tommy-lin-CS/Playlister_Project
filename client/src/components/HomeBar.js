@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { GlobalStoreContext } from '../store'
+import { useHistory } from 'react-router-dom'
 import AuthContext from '../auth';
-import { Button, IconButton, TextField } from '@mui/material';
+import { Box, Button, IconButton, TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import SortIcon from '@mui/icons-material/Sort';
@@ -17,6 +18,7 @@ import SearchIcon from '@mui/icons-material/Search';
 */
 const HomeBar = () => {
     const { store } = useContext(GlobalStoreContext);
+    const history = useHistory();
     const { auth } = useContext(AuthContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isDropdownOpen = Boolean(anchorEl);
@@ -27,35 +29,50 @@ const HomeBar = () => {
 
     const handleDropdownClose = (event) => {
         setAnchorEl(null);
-    }
+    };
+
+    const handleClickHomeButton = () => {
+        history.push("/");
+    };
+
+    const handleClickPlaylistsButton = () => {
+
+    };
+
+    const handleClickUsersButton = () => {
+
+    };
 
     // Home Button functionality different depending on the user logged in (guest or not)
     let homeButton;
-    console.log(auth.user.username);
 
     if (auth.user.username !== "Guest") {
-        homeButton =
-            <Button
+        homeButton = (
+            <IconButton
                 aria-label="home"
                 id="home-button"
                 style={{ color: "black" }}
+                onClick={handleClickHomeButton}
             >
                 <HomeIcon style={{ fontSize: 45 }} />
-            </Button>;
+            </IconButton>
+        );
     }
     else {
-        homeButton =
-            <Button
+        homeButton = (
+            <IconButton
                 disabled
                 aria-label="home"
                 id="home-button"
                 style={{ color: "gray" }}
             >
                 <HomeIcon style={{ fontSize: 45 }} />
-            </Button>;
+                
+            </IconButton>
+        );
     }
 
-    let searchBar =
+    let searchBar = (
         <form id="search-bar">
             <TextField
                 id="search-field"
@@ -68,7 +85,27 @@ const HomeBar = () => {
                 <SearchIcon style={{ fill: "black", fontSize: 40 }} />
             </IconButton>
         </form>
+    );
 
+    let allPlaylistsButton = (
+        <IconButton
+            aria-label="all-playlists"
+            id="all-playlists-button"
+            style={{ color: "black" }}
+        >
+            <GroupsIcon style={{ fontSize: 45 }} />
+        </IconButton>
+    );
+
+    let allUsersButton = (
+        <IconButton
+            aria-label="all-users"
+            id="all-users-button"
+            style={{ color: "black" }}
+        >
+            <PersonIcon style={{ fontSize: 45 }} />
+        </IconButton>
+    );
 
     let dropdown = (
         <Menu
@@ -95,38 +132,40 @@ const HomeBar = () => {
     );
 
     return (
-        <div id="homescreen-banner">
-            {homeButton}
-
-            <Button
-                aria-label="all-playlists"
-                id="all-playlists-button"
-                style={{ color: "black" }}
+        <div style={{ width: '100%' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    m: 1,
+                    borderRadius: 1,
+                }}
             >
-                <GroupsIcon style={{ fontSize: 45 }} />
-            </Button>
 
-            <Button
-                aria-label="all-users"
-                id="all-users-button"
-                style={{ color: "black" }}
-            >
-                <PersonIcon style={{ fontSize: 45 }} />
-            </Button>
+                <Box>
+                    {homeButton}
+                    {allPlaylistsButton}
+                    {allUsersButton}
+                </Box>
 
-            {searchBar}
+                <Box>
+                    {searchBar}
+                </Box>
 
-            <Button
-                id="sort-by-button"
-                aria-label="sort by"
-                aria-controls='primary-search-account-menu'
-                onClick={handleDropdownOpen}
-                endIcon={<SortIcon style={{ fontSize: 45 }} />}
-                sx={{ color: 'black', fontSize: 20, fontWeight: 'bold' }}
-            >
-                Sort By
-            </Button>
-            {dropdown}
+                <Box>
+                    <Button
+                        aria-label="sort by"
+                        aria-controls='primary-search-account-menu'
+                        onClick={handleDropdownOpen}
+                        endIcon={<SortIcon style={{ fontSize: 45 }} />}
+                        sx={{ color: 'black', fontSize: 20, fontWeight: 'bold', flexGrow: 1 }}
+                    >
+                        Sort By
+                    </Button>
+                    {dropdown}
+                </Box>
+                
+            </Box>
         </div>
     );
 }

@@ -17,7 +17,6 @@ const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
     const [anchorEl, setAnchorEl] = useState(null);
-    const isDropdownOpen = Boolean(anchorEl);
 
 
     useEffect(() => {
@@ -93,7 +92,7 @@ const HomeScreen = () => {
                     </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                    <YouTubePlayer />
+                    {/* <YouTubePlayer /> */}
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                     <TextField></TextField>

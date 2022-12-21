@@ -4,7 +4,7 @@ import IconButton from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
-import { ButtonGroup } from '@mui/material';
+import { Box, ButtonGroup } from '@mui/material';
 
 /*
     This toolbar is a functional React component that
@@ -27,7 +27,7 @@ function EditToolbar() {
     }
 
     return (
-        <div id="edit-toolbar">
+        <Box positition="static" id="edit-toolbar">
             <ButtonGroup sx={{ margin: '10px'}} variant="contained" aria-label="outlined button group" >
                 <IconButton
                     disabled={ isModalOpen }
@@ -52,7 +52,7 @@ function EditToolbar() {
                 </IconButton>
             </ButtonGroup>
 
-        </div>
+        </Box>
     )
 }
 
