@@ -47,6 +47,15 @@ function SongCard(props) {
         }
     }
 
+    let removeSongButton;
+    if (store.currentList.published === false) {
+        removeSongButton = (
+            <IconButton type='button' className="list-card-button" onClick={handleRemoveSong}>
+                <DeleteIcon id={'remove-song-' + index} sx={{ color: 'white', fontSize: 'medium' }}></DeleteIcon>
+            </IconButton>
+        );
+    }
+
     let cardClass = "list-card unselected-list-card";
     return (
         <div
@@ -58,15 +67,13 @@ function SongCard(props) {
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            draggable="true"
+            draggable={!store.currentList.published}
             onClick={handleClick}
         >
             {index + 1}. { }
             {song.title} by {song.artist}
-            <IconButton type='button' className="list-card-button" onClick={handleRemoveSong}>
-                <DeleteIcon id={'remove-song-' + index} sx={{ color: 'white', fontSize: 'medium' }}></DeleteIcon>
-            </IconButton>
 
+            {removeSongButton}
         </div>
     );
 }

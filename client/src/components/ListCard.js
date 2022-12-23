@@ -16,6 +16,8 @@ import MUIDeleteModal from './MUIDeleteModal';
 import SongCard from './SongCard';
 import MUIEditSongModal from './MUIEditSongModal'
 import MUIRemoveSongModal from './MUIRemoveSongModal'
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -29,8 +31,7 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const { idNamePair } = props;
     const [text, setText] = useState(idNamePair.name);
-    const [openActive, setOpenActive] = useState(false);
-
+    const [expanded, setExpanded] = React.useState(false);
 
     function handleLoadList(event, id) {
         console.log("handleLoadList for " + id);
@@ -44,7 +45,7 @@ function ListCard(props) {
             // CHANGE THE CURRENT LIST
             store.setCurrentList(id);
 
-            setOpenActive(!openActive);
+            // setOpenActive(!openActive);
 
         }
     }
@@ -63,7 +64,6 @@ function ListCard(props) {
     }
 
     async function handleDeleteList(event, id) {
-        console.log(id)
         event.stopPropagation();
         let _id = event.target.id;
         _id = ("" + _id).substring("delete-list-".length);
@@ -82,13 +82,17 @@ function ListCard(props) {
     }
 
     function handleDuplicatePlaylist() {
-        console.log("HAPPY")
         handleCloseList();
-        store.createNewList(idNamePair.name, idNamePair.songs)
+        store.createNewList(idNamePair.name, idNamePair.songs);
     }
 
     function handleCloseList() {
         store.closeCurrentList();
+    }
+
+    function handlePublishList(event) {
+        event.stopPropagation();
+        store.publishList();
     }
 
     let modalJSX = "";
@@ -102,31 +106,30 @@ function ListCard(props) {
     let songCard;
     if (store.currentList) {
         songCard =
-        (
-        <Box>
-            < List disablePadding
-                id="playlist-cards"
-                sx={{ width: '100%' }
-                }
-            >
-                {
-                    store.currentList.songs.map((song, index) => (
-                        <SongCard
-                            id={'playlist-song-' + (index)}
-                            key={'playlist-song-' + (index)}
-                            index={index}
-                            song={song}
-                        />
-                    ))
-                }
-            </List >
-            {modalJSX}
-        </Box>
-        )
+            (
+                <Box>
+                    < List disablePadding
+                        id="playlist-cards"
+                        sx={{ width: '100%' }
+                        }
+                    >
+                        {
+                            store.currentList.songs.map((song, index) => (
+                                <SongCard
+                                    id={'playlist-song-' + (index)}
+                                    key={'playlist-song-' + (index)}
+                                    index={index}
+                                    song={song}
+                                />
+                            ))
+                        }
+                    </List >
+                    {modalJSX}
+                </Box>
+            )
     }
 
     let cardElement;
-
     if (idNamePair.published === false) {
         cardElement =
             <Box
@@ -148,11 +151,10 @@ function ListCard(props) {
                         <Typography sx={{ pl: 1, fontSize: 18 }}>
                             By: {idNamePair.ownerUsername}
                             <br></br>
-                            Published:
                             <br></br>
-                            Listens: {idNamePair.listens}
-                        </Typography>
+                            <br></br>
 
+                        </Typography>
                     </Box>
 
                     <Accordion
@@ -162,7 +164,6 @@ function ListCard(props) {
                         sx={{ bgcolor: 'gray', width: '100%' }}
                         onChange={(event, expanded) => {
                             if (expanded) {
-                                // handleChange(idNamePair._id)
                                 handleLoadList(event, idNamePair._id)
                                 console.log(store.currentList)
                             }
@@ -185,8 +186,89 @@ function ListCard(props) {
                                     <DeleteIcon></DeleteIcon>
                                 </IconButton>
 
-                                <IconButton aria-label='publish playlist'>
+                                <IconButton onClick={handlePublishList} aria-label='publish playlist'>
                                     <PublishIcon></PublishIcon>
+                                </IconButton>
+
+                                <IconButton onClick={handleDuplicatePlaylist} aria-label='duplicate playlist'>
+                                    <ContentCopyIcon></ContentCopyIcon>
+                                </IconButton>
+
+                            </ButtonGroup>
+                        </AccordionDetails>
+                    </Accordion>
+                </ListItem>
+            </Box>
+    }
+    else {
+        cardElement =
+            <Box
+                id={idNamePair._id}
+                key={idNamePair._id}
+                sx={{ width: '100%', borderRadius: '5px', paddingBottom: '10px' }}
+            >
+                <ListItem
+                    id={idNamePair._id}
+                    key={idNamePair._id}
+                    sx={{ height: '20%', p: 1, flexWrap: 'wrap', bgcolor: 'gray', borderBottomLeftRadius: '5px', borderBottomRightRadius: '5px', borderTopRightRadius: '5px', borderTopLeftRadius: '5px' }}
+                >
+                    <Box
+                        id='playlist-card-top'
+                        onDoubleClick={handleToggleEdit}
+                    >
+                        <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between'
+                        }}>
+                            <Box>
+                                <Typography sx={{ pr: 10, pl: 1, fontSize: 30, fontWeight: 'bold', width: '100%' }}> {idNamePair.name} </Typography>
+                            </Box>
+
+                            <Box sx={{ pr: 10, pl: 2, fontSize: 18 }}>
+                                <IconButton sx={{ fontSize: 30 }}>
+                                    <ThumbUpAltIcon sx={{ fontSize: 30 }}></ThumbUpAltIcon>
+                                </IconButton> {idNamePair.likes}
+
+                                <IconButton sx={{ fontSize: 30 }}>
+                                    <ThumbDownAltIcon sx={{ fontSize: 30 }}></ThumbDownAltIcon>
+                                </IconButton> {idNamePair.dislikes}
+                            </Box>
+                        </Box>
+
+                        <Typography sx={{ pl: 1, fontSize: 18 }}>
+                            By: {idNamePair.ownerUsername}
+                            <br></br>
+                            Published: {idNamePair.publishedDate}
+                            <br></br>
+                            Listens: {idNamePair.listens}
+                        </Typography>
+
+                    </Box>
+
+                    <Accordion
+                        id={idNamePair._id}
+                        elevation={0}
+                        sx={{ bgcolor: 'gray', width: '100%' }}
+                        onChange={(event, expanded) => {
+                            if (expanded) {
+                                handleLoadList(event, idNamePair._id)
+                            }
+                            else if (!expanded) {
+                                handleCloseList()
+                            }
+                        }}
+                    >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                        >
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            {songCard}
+                            <MUIDeleteModal />
+                            <ButtonGroup sx={{ margin: '10px' }} variant="contained" aria-label="outlined button group" >
+
+                                <IconButton onClick={(event) => { handleDeleteList(event, idNamePair._id) }} aria-label='delete playlist'>
+                                    <DeleteIcon></DeleteIcon>
                                 </IconButton>
 
                                 <IconButton onClick={handleDuplicatePlaylist} aria-label='duplicate playlist'>
@@ -202,23 +284,26 @@ function ListCard(props) {
 
 
     if (editActive) {
-        cardElement =
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id={"list-" + idNamePair._id}
-                label="Playlist Name"
-                name="name"
-                autoComplete="Playlist Name"
-                className='list-card'
-                onKeyPress={handleKeyPress}
-                onChange={handleUpdateText}
-                defaultValue={idNamePair.name}
-                InputProps={{ style: { fontSize: 48 } }}
-                InputLabelProps={{ style: { fontSize: 24 } }}
-                autoFocus
-            />
+        if (idNamePair.published === false) {
+            cardElement =
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id={"list-" + idNamePair._id}
+                    label="Playlist Name"
+                    name="name"
+                    autoComplete="Playlist Name"
+                    className='list-card'
+                    onKeyPress={handleKeyPress}
+                    onChange={handleUpdateText}
+                    defaultValue={idNamePair.name}
+                    InputProps={{ style: { fontSize: 48 } }}
+                    InputLabelProps={{ style: { fontSize: 24 } }}
+                    autoFocus
+                />
+        }
+
     }
     return (
         cardElement

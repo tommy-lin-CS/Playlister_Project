@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { GlobalStoreContext } from '../store'
-import { useHistory } from 'react-router-dom'
 import AuthContext from '../auth';
 import { Box, Button, IconButton, TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,7 +17,6 @@ import SearchIcon from '@mui/icons-material/Search';
 */
 const HomeBar = () => {
     const { store } = useContext(GlobalStoreContext);
-    const history = useHistory();
     const { auth } = useContext(AuthContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isDropdownOpen = Boolean(anchorEl);
@@ -32,14 +30,14 @@ const HomeBar = () => {
     };
 
     const handleClickHomeButton = () => {
-        history.push("/");
+        store.homePage();
     };
 
-    const handleClickPlaylistsButton = () => {
+    const handleClickAllListsButton = () => {
 
     };
 
-    const handleClickUsersButton = () => {
+    const handleClickAllUsersButton = () => {
 
     };
 

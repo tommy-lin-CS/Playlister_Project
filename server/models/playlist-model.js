@@ -25,7 +25,7 @@ const playlistSchema = new Schema(
         dislikes: { type: Number, required: true },
         listens: { type: Number, required: true },
         published: { type: Boolean, required: true},
-        publishedDate: {type: Date, required: true}
+        publishedDate: {type: String, required: false}
     },
     { timestamps: true },
 )

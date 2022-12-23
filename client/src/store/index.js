@@ -32,7 +32,8 @@ export const GlobalStoreActionType = {
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
     EDIT_SONG: "EDIT_SONG",
     REMOVE_SONG: "REMOVE_SONG",
-    HIDE_MODALS: "HIDE_MODALS"
+    HIDE_MODALS: "HIDE_MODALS",
+    HOME_PAGE: "HOME_PAGE"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -210,6 +211,19 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null
                 });
+            }
+            case GlobalStoreActionType.HOME_PAGE: {
+                return setStore({
+                    currentModal: CurrentModal.NONE,
+                    idNamePairs: payload,
+                    currentList: null,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null
+                })
             }
             default:
                 return store;
@@ -544,6 +558,45 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE,
             payload: null
         });
+    }
+
+    store.publishList = function() {
+        let list = store.currentList;
+        list.published = true;
+        
+        let date = new Date();
+        let month = date.getMonth();
+        let day = date.getDate();
+        let year = date.getFullYear();
+        let toStringDate = month + '/' + day + '/' + year
+        
+        list.publishedDate = toStringDate;
+        store.updateCurrentList();
+    }
+
+    store.homePage = function () {
+        async function asyncLoadHomePageIdNamePairs() {
+            const response = await api.getPlaylistPairs();
+            if (response.data.success) {
+                let pairsArray = response.data.idNamePairs;
+                storeReducer({
+                    type: GlobalStoreActionType.HOME_PAGE,
+                    payload: pairsArray
+                });
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+        }
+        asyncLoadHomePageIdNamePairs();
+    }
+        
+    store.allListsPage = () => {
+
+    }
+
+    store.allUsersPage = () => {
+
     }
 
     return (
